@@ -3,56 +3,48 @@
 function setup() {
   const allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
-}
-function makePageForEpisodes(episodeList) {
-  const rootElem = document.getElementById("root");
-  rootElem.textContent = `Got ${episodeList.length} episode(s)`;
-}
 
-window.onload = setup;
-window.onload=()=>{
-  const divEl=document.getElementById("root")
-  let header=document.createElement('header')
-  let searchbox=document.createElement('input');
-  divEl.appendChild(header)
-  header.appendChild(searchbox)
-  let lable=document.createElement('lable');
-  header.appendChild(lable)
-  lable.innerText='Displaying Episods'
-  const sectionEl=document.getElementById("main-page");
-  const episodes=getAllEpisodes()
-  divEl.appendChild(sectionEl);
-  let spanEl=document.createElement('span')
-  lable.appendChild(spanEl)
-  spanEl.innerText='/73'
-for (let episode of episodes){
-const articleEl=document.createElement("article");
-const h3=document.createElement("h3");
-const image=document.createElement("img");
-let pragragh=document.createElement("p")
-sectionEl.appendChild(articleEl);
-articleEl.appendChild(h3);
-articleEl.appendChild(image);
-articleEl.appendChild(pragragh);
-h3.innerText=episode.name+'-'+episode.season.toString().padStart(3,'S0')+episode.number.toString().padStart(3,'E0');
-image.src=episode.image.medium;
-pragragh.innerHTML=episode.summary
-searchbox.addEventListener('input',()=>{
-  if(episode.name.toLowerCase().includes(searchbox.value.toLowerCase())||episode.summary.toLowerCase().includes(searchbox.value.toLowerCase())){
-    articleEl.style.display='grid'
-  }
-  else{
-    articleEl.style.display='none'
-  }
-})
 }
-let footer=document.createElement('footer');
-let link=document.createElement('a')
-link.setAttribute('href','https://www.tvmaze.com/')
-link.innerText='TVMaze.com'
-divEl.appendChild(footer);
-footer.appendChild(link);
+const rootElem = document.getElementById("root");
+function makePageForEpisodes(episodeList) {
+  // const rootElem = document.getElementById("root");
+  const header=document.createElement('header')
+  rootElem.appendChild(header)
+  const sectionEl=document.createElement('section')
+  rootElem.appendChild(sectionEl)
+  sectionEl.setAttribute('class','main')
+  // rootElem.textContent = `Got ${episodeList.length} episode(s)`;
+  for(let episode of episodeList){
+  const articleEl=document.createElement("article")
+        const h3=document.createElement("h3")
+        const image=document.createElement("img")
+        let pragragh=document.createElement("p")
+        sectionEl.appendChild(articleEl);
+       articleEl.appendChild(h3);
+       articleEl.appendChild(image);
+       articleEl.appendChild(pragragh);
+       h3.innerText=episode.name+'-'+episode.season.toString().padStart(3,'S0')+episode.number.toString().padStart(3,'E0')
+       image.src=episode.image.medium
+       pragragh.innerHTML=episode.summary
+}
+}
+const input=document.getElementById('searchinput')
+input.addEventListener('input',matchEpisode)
+function matchEpisode(){
+
+  const allEpisodes=getAllEpisodes()
+   let matchList=allEpisodes.filter(episode=>{return (episode.name.toLowerCase().includes(input.value.toLowerCase())||episode.summary.toLowerCase().includes(input.value.toLowerCase()))})
+    let spanEl=document.getElementById('count-epispde')
+    spanEl.innerText=matchList.length +' / '+ allEpisodes.length
+    makePageForEpisodes(matchList);
   
 
+  // })
 
 }
+
+
+
+
+ window.onload = setup;
+
