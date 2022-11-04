@@ -41,6 +41,27 @@ function makePageForEpisodes(episodeList) {
 
    })
 
+   const selectedepisode=document.getElementById('secletedepisodes')
+  
+    episodes=getAllEpisodes()
+  episodes.forEach(episode=>{
+    let optionEl=document.createElement('option')
+    selectedepisode.appendChild(optionEl)
+    optionEl.setAttribute('value',episode.id)
+    optionEl.innerText=episode.season.toString().padStart(3,"S0")+episode.number.toString().padStart(3,"E0")+"-"+episode.name
+  })
+  selectedepisode.addEventListener('change',()=>{
+    let episodes=getAllEpisodes()
+    // let e=optionEl.target.value
+    episodes.forEach(episode=>{if(episode.id==event.target.value){
+      makePageForEpisodes([episode])
+    }
+  })
+
+  })
+
+
+
 
 
  window.onload = setup;
