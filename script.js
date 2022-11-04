@@ -15,6 +15,7 @@ function makePageForEpisodes(episodeList) {
          const image=document.createElement("img")
          let pragragh=document.createElement("p")
          sectionEl.appendChild(articleEl);
+         articleEl.setAttribute('class','each-film')
         articleEl.appendChild(h3);
        articleEl.appendChild(image);
        articleEl.appendChild(pragragh);
