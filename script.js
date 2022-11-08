@@ -1,10 +1,56 @@
 //You can edit ALL of the code here
+//Retrieve the JSON
+ function getfetch(){
+fetch("https://api.tvmaze.com/shows/179/episodes")
+  // Get the response and extract the JSON
+  .then(function (response) {
+    return response.json();
+  })
+  // Do something with the JSON
+  .then((response) => {
+    makePageForEpisodes(response);
+     let input=document.getElementById('searchinput')
 
-function setup() {
-  const allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
+  input.addEventListener('keyup',(event)=>{
+    let episodes=response
+    const searchValue=event.target.value
+     const filteredepisodes=episodes.filter(episode=>{return (episode.name.toLowerCase().includes(searchValue.toLowerCase())||episode.summary.toLowerCase().includes(searchValue.toLowerCase()))
 
-}
+    })
+    let spanEl=document.getElementById('count-epispde')
+     spanEl.innerText=filteredepisodes.length +' / '+ episodes.length
+     makePageForEpisodes(filteredepisodes)
+
+   })
+   const selectedepisode=document.getElementById('secletedepisodes')
+  
+    episodes=response
+  episodes.forEach(episode=>{
+    let optionEl=document.createElement('option')
+    selectedepisode.appendChild(optionEl)
+    optionEl.setAttribute('value',episode.id)
+    optionEl.innerText=episode.season.toString().padStart(3,"S0")+episode.number.toString().padStart(3,"E0")+"-"+episode.name
+  })
+  selectedepisode.addEventListener('change',()=>{
+    let episodes=response
+    // let e=optionEl.target.value
+    episodes.forEach(episode=>{if(episode.id==event.target.value){
+      makePageForEpisodes([episode])
+    }
+  })
+
+  })
+
+  })
+  // If something goes wrong
+  .catch((error) => console.log(error));
+ }
+
+ function setup() {
+   const allEpisodes = getfetch();
+    // makePageForEpisodes(allEpisodes);
+
+ }
 function makePageForEpisodes(episodeList) {
     const rootElem = document.getElementById("root")
    const sectionEl=document.createElement('section')
@@ -24,46 +70,41 @@ function makePageForEpisodes(episodeList) {
         pragragh.innerHTML=episode.summary
  }
  rootElem.innerHTML='';
-  rootElem.appendChild(sectionEl)
+   rootElem.appendChild(sectionEl)
   
-  }
+   }
 
-  let input=document.getElementById('searchinput')
+  // let input=document.getElementById('searchinput')
 
-  input.addEventListener('keyup',(event)=>{
-    let episodes=getAllEpisodes()
-    const searchValue=event.target.value
-     const filteredepisodes=episodes.filter(episode=>{return (episode.name.toLowerCase().includes(searchValue.toLowerCase())||episode.summary.toLowerCase().includes(searchValue.toLowerCase()))
+  // input.addEventListener('keyup',(event)=>{
+  //   let episodes=getfetch()
+  //   const searchValue=event.target.value
+  //    const filteredepisodes=episodes.filter(episode=>{return (episode.name.toLowerCase().includes(searchValue.toLowerCase())||episode.summary.toLowerCase().includes(searchValue.toLowerCase()))
 
-    })
-    let spanEl=document.getElementById('count-epispde')
-     spanEl.innerText=filteredepisodes.length +' / '+ episodes.length
-     makePageForEpisodes(filteredepisodes)
+  //   })
+  //   let spanEl=document.getElementById('count-epispde')
+  //    spanEl.innerText=filteredepisodes.length +' / '+ episodes.length
+  //    makePageForEpisodes(filteredepisodes)
 
-   })
+  //  })
 
-   const selectedepisode=document.getElementById('secletedepisodes')
+  // const selectedepisode=document.getElementById('secletedepisodes')
   
-    episodes=getAllEpisodes()
-  episodes.forEach(episode=>{
-    let optionEl=document.createElement('option')
-    selectedepisode.appendChild(optionEl)
-    optionEl.setAttribute('value',episode.id)
-    optionEl.innerText=episode.season.toString().padStart(3,"S0")+episode.number.toString().padStart(3,"E0")+"-"+episode.name
-  })
-  selectedepisode.addEventListener('change',()=>{
-    let episodes=getAllEpisodes()
-    // let e=optionEl.target.value
-    episodes.forEach(episode=>{if(episode.id==event.target.value){
-      makePageForEpisodes([episode])
-    }
-  })
+  //   episodes=getAllEpisodes()
+  // episodes.forEach(episode=>{
+  //   let optionEl=document.createElement('option')
+  //   selectedepisode.appendChild(optionEl)
+  //   optionEl.setAttribute('value',episode.id)
+  //   optionEl.innerText=episode.season.toString().padStart(3,"S0")+episode.number.toString().padStart(3,"E0")+"-"+episode.name
+  // })
+  // selectedepisode.addEventListener('change',()=>{
+  //   let episodes=getfetch()
+  //   // let e=optionEl.target.value
+  //   episodes.forEach(episode=>{if(episode.id==event.target.value){
+  //     makePageForEpisodes([episode])
+  //   }
+  // })
 
-  })
-
-
-
-
-
- window.onload = setup;
+  // })
+  window.onload = setup;
 
