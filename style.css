@@ -1,3 +1,51 @@
-#root {
-  color: red;
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+}
+:root{
+  --primary-color:white;
+  --secondry-color:rgb(195, 199, 239);
+  --tertiary-color:rgb(42, 29, 82);
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 270px 270px 270px;
+  grid-template-rows: auto;
+  gap: 2em;
+  background-color: var(--primary-color);
+  justify-content: center;
+}
+h3{padding: 10px;
+justify-items: center;}
+#searh-form{
+  padding:20px;
+  background-color: azure;
+}
+.each-film {
+  background-color: var(--secondry-color);
+  padding:10px;
+  justify-content: center;
+}
+#secletedepisodes{
+  padding:10px;
+  border-radius: 5px;
+  
+}
+#searchinput{
+  padding:10px;
+  border-radius: 5px;
+
+}
+.shows{
+  display: flex;
+  flex-direction: row;
+  border:2px black solid;
+  margin-bottom: 10px;
+}
+.showinfo{
+  display: flex;
+  flex-direction: row;
 }
