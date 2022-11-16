@@ -1,10 +1,16 @@
+//defining some global variables
 const rootElem = document.getElementById("root")
 const showSelect = document.getElementById("showselection");
+const showselediv=document.getElementById('showsele')
+const keydiv=document.getElementById('key')
 const allShows = getAllShows();
-console.log(allShows[0].id);
 
-// 
-//You can edit ALL of the code here
+window.onload = setup;
+// set up function
+ function setup() {
+  loadPage(allShows)
+ }
+
 //Retrieve the JSON
  function getfetch(showid){
   let url=`https://api.tvmaze.com/shows/${showid}/episodes`
@@ -15,7 +21,6 @@ fetch(url)
   })
   // Do something with the JSON
   .then((response) => {
-    console.log(response[0])
     makePageForEpisodes(response);
      selecttionForEpisode(response)
     //  createShowDropDown(allShows)
@@ -44,7 +49,6 @@ fetch(url)
   })
   selectedepisode.addEventListener('change',()=>{
     let episodes=response
-    // let e=optionEl.target.value
     episodes.forEach(episode=>{if(episode.id==event.target.value){
       makePageForEpisodes([episode])
     }
@@ -80,8 +84,8 @@ function makePageForEpisodes(episodeList) {
    }
     // function createShowDropDown(showList) {
   //  creates drop down select menu with each option a link to the episode
-  allShows.forEach((show) => {
-    const option = document.createElement("option"); // create option element for each ep and fill the select dropdown
+  allShows.sort((a, b) => a.name.localeCompare(b.name)).forEach((show) => {
+    const option = document.createElement("option"); // create option elemenfor each ep and fill the select dropdown
     showSelect.appendChild(option);
     option.innerText = `${show.name}`
     option.setAttribute('value',show.id)
@@ -94,18 +98,7 @@ function makePageForEpisodes(episodeList) {
       getfetch(showid)
     })
    })
-//  }
-function selecttionForEpisode(){
-  
-}
 
- function setup() {
-   const allEpisodes = getAllEpisodes();
-   makePageForEpisodes(allEpisodes);
-
- }
-
-  window.onload = setup;
 
  function selecttionForEpisode(x){
   const selectedepisode=document.getElementById('secletedepisodes')
@@ -126,3 +119,38 @@ function selecttionForEpisode(){
 
   })
 }
+function loadPage(){
+    allShows.forEach(show=>{
+   let sectionEl=document.createElement('section')
+    sectionEl.setAttribute('class','shows')
+    sectionEl.setAttribute('id',show.id)
+    let divone=document.createElement('div')
+    divone.setAttribute('class','showinfo')
+    let divtwo=document.createElement('div')
+    let image=document.createElement('img')
+    image.src=show.image?.medium 
+    let title=document.createElement('h4')
+    title.innerText=show.name
+    let para=document.createElement('p')
+    para.innerHTML=show.summary
+    let ulEl=document.createElement('ul')
+    let liOne=document.createElement('li')
+    liOne.innerText=`Rated ${show.rating.average}`
+    let liTwo=document.createElement('li')
+    liTwo.innerText=`Genres:genres`
+    let liThree=document.createElement('li')
+    let liFour=document.createElement('li')
+    ulEl.appendChild(liOne)
+    divtwo.appendChild(ulEl)
+    divone.appendChild(image)
+    divone.appendChild(title)
+    divone.appendChild(para)
+    sectionEl.appendChild(divone)
+    sectionEl.appendChild(divtwo)
+    root.appendChild(sectionEl)
+    sectionEl.addEventListener('click',e=>{
+    getfetch(show.id)
+  })
+  })
+  
+  }
